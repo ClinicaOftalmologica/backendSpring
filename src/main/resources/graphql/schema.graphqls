@@ -1,0 +1,32 @@
+
+
+
+type Query {
+  listarUsuario: [User]
+}
+
+type User {
+  id: Int
+  username: String
+  password: String
+  email: String
+  role: String
+}
+
+input RegisterRequest {
+  username: String!
+  password: String!
+  email: String!
+}
+
+type AuthResponse {
+  token: String!
+}
+
+type Mutation {
+  register(request: RegisterRequest): AuthResponse
+}
+
+
+
+
