@@ -7,8 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.stereotype.Service;
 
-import com.softwaredos.clinica.Model.Role;
 import com.softwaredos.clinica.Model.User;
+import com.softwaredos.clinica.Model.User.Role;
 import com.softwaredos.clinica.jwt.JwtService;
 import com.softwaredos.clinica.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class AuthService {
             .username(request.getUsername())
             .password(passwordEncoder.encode( request.getPassword()))
             .email(request.getEmail())
-            .role(Role.USER)
+            .role(Role.PACIENTE)
             .build();
 
             userRepository.save(user);

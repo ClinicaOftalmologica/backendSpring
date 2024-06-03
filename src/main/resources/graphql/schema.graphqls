@@ -1,14 +1,8 @@
 
 
-
-type Query {
-  listarUsuario: [User]
-}
-
 type User {
   id: Int
   username: String
-  password: String
   email: String
   role: String
 }
@@ -19,14 +13,25 @@ input RegisterRequest {
   email: String!
 }
 
+input LoginRequest {
+  username: String!
+  password: String!
+}
+
+
 type AuthResponse {
   token: String!
 }
 
-type Mutation {
-  register(request: RegisterRequest): AuthResponse
+
+type Query {
+  #requiere token
+  listarUsuario: [User]
+  findUser(username: String):User
 }
 
-
-
-
+type Mutation {
+  #publico
+  login(request : LoginRequest ): AuthResponse
+  register(request: RegisterRequest): AuthResponse
+}
