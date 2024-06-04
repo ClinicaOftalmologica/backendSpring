@@ -1,0 +1,40 @@
+type User {
+  id: Int
+  username: String
+  email: String
+  role: String
+}
+
+input RegisterRequest {
+  email: String!
+  password: String!
+  name: String!
+  last_name: String!
+  address: String!
+  ci: String!
+  sexo: String!
+  contact_number: String!
+  birth_date: String!
+  url: String!
+}
+
+input LoginRequest {
+  email: String!
+  password: String!
+}
+
+type AuthResponse {
+  token: String!
+}
+
+type Query {
+  #requiere token
+  listarUsuario: [User]
+  findUser(username: String): User
+}
+
+type Mutation {
+  #publico
+  login(request: LoginRequest): AuthResponse
+  register(request: RegisterRequest): AuthResponse
+}
