@@ -1,5 +1,5 @@
 
-package com.softwaredos.clinica.controller;
+package com.softwaredos.clinica.Controller.AuthController;
 
 
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -12,9 +12,13 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.softwaredos.clinica.Request.LoginRequest;
+import com.softwaredos.clinica.Request.RegisterRequest;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthControllerGraphql implements GraphQLMutationResolver{
+
 
     @Autowired
     private final AuthService authService;
@@ -27,7 +31,10 @@ public class AuthControllerGraphql implements GraphQLMutationResolver{
 
     @MutationMapping
     public AuthResponse register(@Argument RegisterRequest request) {
+
         return authService.register(request);
     }
+
+    
 
 }

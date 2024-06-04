@@ -1,4 +1,4 @@
-package com.softwaredos.clinica.jwt;
+package com.softwaredos.clinica.utils;
 
 import java.io.IOException;
 

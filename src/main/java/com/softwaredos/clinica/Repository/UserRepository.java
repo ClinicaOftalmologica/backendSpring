@@ -1,4 +1,4 @@
-package com.softwaredos.clinica.repo;
+package com.softwaredos.clinica.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +8,7 @@ import com.softwaredos.clinica.Model.User.Role;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
     List<User> findByRole(Role role);
 
 }

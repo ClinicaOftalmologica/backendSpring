@@ -1,4 +1,4 @@
-package com.softwaredos.clinica.controller;
+package com.softwaredos.clinica.Controller.AuthController;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
-    String username;
-    String password;
-    String email;
+public class AuthResponse {
+    String token;
 }

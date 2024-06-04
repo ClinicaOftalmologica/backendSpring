@@ -1,4 +1,4 @@
-package com.softwaredos.clinica.Demo;
+package com.softwaredos.clinica.Controller;
 
 import java.util.List;
 
@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.softwaredos.clinica.Model.User;
 import com.softwaredos.clinica.Model.User.Role;
-import com.softwaredos.clinica.repo.UserRepository;
+import com.softwaredos.clinica.Repository.UserRepository;
+
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import org.springframework.security.access.annotation.Secured;
 
 @RestController
 @RequiredArgsConstructor
-public class ControllerUsuario {
+public class UserController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -35,6 +36,13 @@ public class ControllerUsuario {
     @Secured({ "ROLE_DOCTOR", "ROLE_ADMIN" })
     @QueryMapping
     public User findUser(@Argument String username) {
+        LOGGER.info("esta filtrando por su username");
+        Optional<User> userOptional = userrepo.findByUsername(username);
+        return userOptional.orElse(null);
+    }
+
+    @QueryMapping
+    public boolean user_store(@Argument Userreeques username) {
         LOGGER.info("esta filtrando por su username");
         Optional<User> userOptional = userrepo.findByUsername(username);
         return userOptional.orElse(null);

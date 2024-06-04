@@ -1,4 +1,4 @@
-package com.softwaredos.clinica.controller;
+package com.softwaredos.clinica.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
-    String username;
+    String email;
     String password;
 }

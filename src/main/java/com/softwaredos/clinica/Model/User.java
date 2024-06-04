@@ -27,7 +27,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }) })
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username","email" }) })
 
 public class User implements UserDetails {
     @Id
@@ -46,8 +46,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(("ROLE_"+role.name())));
+        return List.of(new SimpleGrantedAuthority(("ROLE_" + role.name())));
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
