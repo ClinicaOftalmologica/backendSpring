@@ -1,4 +1,4 @@
-package com.softwaredos.clinica.Controller.AuthController;
+package com.softwaredos.clinica.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    String token;
+public class HorarioRequest {
+    String id;
+    String date;
+    String time;
 }

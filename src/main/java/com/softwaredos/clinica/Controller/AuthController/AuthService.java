@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,7 @@ import com.softwaredos.clinica.Repository.PersonRepository;
 import com.softwaredos.clinica.Repository.UserRepository;
 import com.softwaredos.clinica.Request.LoginRequest;
 import com.softwaredos.clinica.Request.RegisterRequest;
+import com.softwaredos.clinica.Response.AuthResponse;
 import com.softwaredos.clinica.utils.JwtService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,8 +40,7 @@ public class AuthService {
         private final AuthenticationManager authenticationManager;
 
         public AuthResponse login(LoginRequest request) {
-                authenticationManager
-                                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),
                                                 request.getPassword()));
                 UserDetails user = userRepository.findByUsername(request.getEmail()).orElseThrow();
                 String token = jwtService.getToken(user);
@@ -49,7 +50,15 @@ public class AuthService {
         }
 
         public AuthResponse register(RegisterRequest request) {
-                User user = User.builder()
+                try {
+                        Optional<User> usuarioOptional = userRepository.findByUsername(request.getEmail());
+
+                if (usuarioOptional.isPresent()) {
+                        return AuthResponse.builder()
+                        .message("El usuario ya existe")
+                        .build();    
+                }else{
+                        User user = User.builder()
                                 .username(request.getEmail())
                                 .password(passwordEncoder.encode(request.getPassword()))
                                 .email(request.getEmail())
@@ -82,6 +91,14 @@ public class AuthService {
                 return AuthResponse.builder()
                                 .token(jwtService.getToken(user))
                                 .build();
-        }
+                }  
+                        
+                } catch (Exception e) {
+                        return AuthResponse.builder()
+                        .message("Error: "+e.getMessage())
+                        .build(); 
+                }
 
+                           
+        }
 }

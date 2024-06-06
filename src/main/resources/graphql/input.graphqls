@@ -1,0 +1,45 @@
+input RegisterRequest {
+  email: String!
+  password: String!
+  name: String!
+  last_name: String!
+  address: String!
+  ci: String!
+  sexo: String!
+  contact_number: String!
+  birth_date: String!
+  url: String!
+  titulo: String!
+}
+
+input LoginRequest {
+  email: String!
+  password: String!
+}
+
+input HorarioRequest {
+  id: String
+  date: String!
+  time: String!
+}
+
+input ReservationRequest {
+  id: String
+  place: String!
+  available_time_id: String!
+}
+
+input DetailRequest {
+  id: String
+  title: String!
+  notes: String!
+  paciente_id: String
+}
+
+input DocumentRequest {
+  id: String
+  descripcion: String
+  url: String
+  type_file: String
+  story_detail_id: String
+}

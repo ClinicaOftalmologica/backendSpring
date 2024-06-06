@@ -1,58 +1,47 @@
-type User {
-  id: Int
-  username: String
-  email: String
-  role: String
-}
-type Person {
-   id:Int
-   name: String
-   lastName: String
-   address: String
-   ci: String
-   sexo: String
-   contactNumber: String
-   titulo:String
-   user:User
-}
-
-input RegisterRequest {
-  email: String!
-  password: String!
-  name: String!
-  last_name: String!
-  address: String!
-  ci: String!
-  sexo: String!
-  contact_number: String!
-  birth_date: String!
-  url: String!
-  titulo:String!
-}
-
-
-input LoginRequest {
-  email: String!
-  password: String!
-}
-
-type AuthResponse {
-  token: String!
-}
 
 type Query {
   #requiere token
-  listarUsuario: [User]
+  listarUsuario: [Person]
   findUser(username: String): User
-  showDoctor(id:Int):Person
-}
+  showDoctor(id: String): Person
 
+  #Gestionar horario
+  miHorario: HorarioResponse
+  getHorarioDisponible: [Available_time]
+  getReservaPendiente: [Reservation]
+
+  show_Story_detail(id: String): Story_detail
+  ListDetallePaciente(paciente_id: String): [Story_detail]
+  miHistorial: [Story_detail]
+
+  #Documentos
+  getDocument(historial_id: String): [Documents]
+  showDocument(id: String): Documents
+}
 
 type Mutation {
   #publico
   login(request: LoginRequest): AuthResponse
   register(request: RegisterRequest): AuthResponse
-  storeDoctor(request:RegisterRequest):String
-  deleteDoctor(id:Int):String
-  updateDoctor(id:Int,request:RegisterRequest):String
+  storeDoctor(request: RegisterRequest): String
+  deleteDoctor(id: String): String
+  updateDoctor(id: String, request: RegisterRequest): String
+
+  # Horario
+  storeHorario(request: HorarioRequest): Available_time
+  updateHorario(request: HorarioRequest): Available_time
+  deleteHorario(id: String): Boolean!
+
+  # Gestionar Reserva
+  saveReservation(request: ReservationRequest): Reservation
+  cancelReserva(id: String): Reservation
+
+  #Gestionar Historia detalle
+  store_StoryDetail(request: DetailRequest): Story_detail
+  update_StoryDetail(request: DetailRequest): Story_detail
+  DeleteStoryDetail(id: String): Boolean
+
+  #Gestionar documento
+  uploadDocument(request: DocumentRequest): Documents
+  deleteDocument(id: String): Boolean
 }
