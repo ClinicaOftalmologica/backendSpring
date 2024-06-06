@@ -24,5 +24,6 @@ public class RegisterRequest {
     String contact_number;
     String birth_date;
     String url;
+    String titulo;
     
 }
