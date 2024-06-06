@@ -56,14 +56,21 @@ public class Person {
     Short tipoUser;
 
     @Basic
-    @Column(length = 255)
+    @Column(length = 255, nullable = true)
     String titulo;
 
     @Basic
-    @Column(name = "birth_date")
+    @Column(name = "birth_date",nullable = true)
     Date birthDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     User user;
+
+
+
+    public Long getId() {
+        return (long) id;
+    }
+
 }

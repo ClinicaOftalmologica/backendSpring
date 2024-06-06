@@ -81,4 +81,9 @@ public class User implements UserDetails {
         }
     }
 
+
+    public long getId(){
+        return (long)id;
+    }
+
 }

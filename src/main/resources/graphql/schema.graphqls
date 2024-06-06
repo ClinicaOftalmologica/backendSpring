@@ -4,6 +4,17 @@ type User {
   email: String
   role: String
 }
+type Person {
+   id:Int
+   name: String
+   lastName: String
+   address: String
+   ci: String
+   sexo: String
+   contactNumber: String
+   titulo:String
+   user:User
+}
 
 input RegisterRequest {
   email: String!
@@ -16,7 +27,9 @@ input RegisterRequest {
   contact_number: String!
   birth_date: String!
   url: String!
+  titulo:String!
 }
+
 
 input LoginRequest {
   email: String!
@@ -31,10 +44,15 @@ type Query {
   #requiere token
   listarUsuario: [User]
   findUser(username: String): User
+  showDoctor(id:Int):Person
 }
+
 
 type Mutation {
   #publico
   login(request: LoginRequest): AuthResponse
   register(request: RegisterRequest): AuthResponse
+  storeDoctor(request:RegisterRequest):String
+  deleteDoctor(id:Int):String
+  updateDoctor(id:Int,request:RegisterRequest):String
 }
