@@ -1,14 +1,8 @@
 package com.softwaredos.clinica.Model;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,57 +14,30 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "person")
+@Document(collection = "person")
 public class Person {
+
     @Id
-    @GeneratedValue
-    Integer id;
+    private String id;
 
-    @Basic
-    @Column(nullable = false, length = 100)
-    String name;
+    private String name;
 
-    @Basic
-    @Column(name = "last_name", nullable = false, length = 100)
-    String lastName;
+    private String lastName;
 
-    @Basic
-    @Column(length = 255)
-    String address;
+    private String address;
 
-    @Basic
-    @Column(length = 50)
-    String ci;
+    private String ci;
 
-    @Basic
-    @Column(nullable = false, length = 1)
-    char sexo;
+    private char sexo;
 
-    @Basic
-    @Column(name = "contact_number", nullable = false, length = 15)
-    String contactNumber;
+    private String contactNumber;
 
-    @Basic
-    @Column(name = "tipo_user", nullable = false)
-    Short tipoUser;
+    private Short tipoUser;
 
-    @Basic
-    @Column(length = 255, nullable = true)
-    String titulo;
+    private String titulo;
 
-    @Basic
-    @Column(name = "birth_date",nullable = true)
-    Date birthDate;
+    private Date birthDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
-
-
-
-    public Long getId() {
-        return (long) id;
-    }
-
+    @DBRef
+    private User user;
 }

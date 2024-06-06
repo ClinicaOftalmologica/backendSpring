@@ -18,7 +18,6 @@ import com.softwaredos.clinica.Model.User;
 import com.softwaredos.clinica.Model.User.Role;
 import com.softwaredos.clinica.Repository.UserRepository;
 
-
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -39,10 +38,11 @@ public class UserController {
 
     @Secured("ROLE_PACIENTE")
     @QueryMapping
-    public List<User> listarUsuario() {
-
-        List<Role> roles = Arrays.asList(Role.DOCTOR, Role.ADMIN); // Añade los roles que necesites
-        return userrepo.findByRoleIn(roles);
+    public List<Person> listarUsuario() {
+        // List<Role> roles = Arrays.asList(Role.DOCTOR, Role.ADMIN); // Añade los roles
+        // que necesites
+        // return userrepo.findByRoleIn(roles);
+        return personRepository.findBytipoUserNot((short) 1);
 
     }
 
@@ -55,12 +55,12 @@ public class UserController {
     }
 
     @MutationMapping
-    public String storeDoctor(@Argument RegisterRequest request){
-          User user = User.builder().email(request.getEmail())
-                  .username(request.getEmail())
-                  .password(passwordEncoder.encode(request.getPassword()))
-                  .role(Role.DOCTOR).build();
-          userrepo.save(user);
+    public String storeDoctor(@Argument RegisterRequest request) {
+        User user = User.builder().email(request.getEmail())
+                .username(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.DOCTOR).build();
+        userrepo.save(user);
 
         Person person = Person.builder()
                 .name(request.getName())
@@ -79,52 +79,48 @@ public class UserController {
     }
 
     @MutationMapping
-    public String deleteDoctor(@Argument int id) {
+    public String deleteDoctor(@Argument String id) {
         if (personRepository.existsById(id)) {
             Person person = personRepository.findById(id).orElse(null);
-            try{
+            try {
                 personRepository.deleteById(id);
                 userrepo.deleteById(person.getUser().getId());
-            }catch(Exception e){
-                return "Error en Catch : "+ e.getMessage();
+            } catch (Exception e) {
+                return "Error en Catch : " + e.getMessage();
             }
 
-
-            return"Se elimino Con Exito : ";
+            return "Se elimino Con Exito : ";
         } else {
             return "Error al eliminar el usuario";
         }
     }
 
     @MutationMapping
-    public String updateDoctor(@Argument int id,@Argument RegisterRequest request){
+    public String updateDoctor(@Argument String id, @Argument RegisterRequest request) {
         Person person = personRepository.findById(id).orElse(null);
         User user = person.getUser();
-        //return user.getPassword();
-            if(person != null && user!=null){
-                user.setEmail(request.getEmail());
-                user.setUsername(request.getEmail());
-                user.setPassword(passwordEncoder.encode(request.getPassword()));
-                userrepo.save(user);
-                person.setCi(request.getCi());
-                person.setTitulo(request.getTitulo());
-                person.setLastName(request.getLast_name());
-                person.setAddress(request.getAddress());
-                //person.setSexo(request.getSexo().charAt(0));
-                person.setName(request.getName());
-                person.setUser(user);
-                personRepository.save(person);
-                return "Doctor acutalizado Con Exito";
-            }
+        // return user.getPassword();
+        if (person != null && user != null) {
+            user.setEmail(request.getEmail());
+            user.setUsername(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            userrepo.save(user);
+            person.setCi(request.getCi());
+            person.setTitulo(request.getTitulo());
+            person.setLastName(request.getLast_name());
+            person.setAddress(request.getAddress());
+            // person.setSexo(request.getSexo().charAt(0));
+            person.setName(request.getName());
+            person.setUser(user);
+            personRepository.save(person);
+            return "Doctor acutalizado Con Exito";
+        }
         return "No se pudieron actualizar los datos";
     }
 
-
     @QueryMapping
-    public Person showDoctor(@Argument int id){
+    public Person showDoctor(@Argument String id) {
         return personRepository.findById(id).orElse(null);
     }
-
-
 
 }

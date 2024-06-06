@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.softwaredos.clinica.Request.LoginRequest;
 import com.softwaredos.clinica.Request.RegisterRequest;
+import com.softwaredos.clinica.Response.AuthResponse;
 
 @RestController
 @RequiredArgsConstructor

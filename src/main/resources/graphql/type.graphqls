@@ -1,0 +1,56 @@
+type User {
+  id: String
+  username: String
+  email: String
+  role: String
+}
+
+type Available_time {
+  id: String
+  date: String
+  time: String
+  doctor: Person
+}
+type Person {
+  id: String
+  name: String
+  lastName: String
+  address: String
+  ci: String
+  sexo: String
+  contactNumber: String
+  titulo: String
+  user: User
+}
+type HorarioResponse {
+  status: Int
+  message: String
+  data: [Available_time]
+}
+type Reservation {
+  id: String
+  place: String
+  state: String
+  available_time: Available_time
+}
+type AuthResponse {
+  token: String
+  message: String
+}
+
+type Story_detail {
+  id: String
+  title: String
+  data_time: String
+  notes: String
+  paciente: Person
+  doctor: Person
+}
+
+type Documents {
+  id: String
+  descripcion: String
+  url: String
+  type_file: String
+  story_detail: Story_detail
+}

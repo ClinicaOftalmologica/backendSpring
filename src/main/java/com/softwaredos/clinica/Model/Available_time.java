@@ -1,28 +1,31 @@
 package com.softwaredos.clinica.Model;
 
+import java.time.LocalTime;
+import java.util.Date;
+
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import jakarta.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "image")
-public class Image {
+@Document(collection = "available_time")
+public class Available_time {
 
     @Id
     private String id;
 
-    private String url;
+    private Date date;
+
+    private LocalTime time;
 
     @DBRef
-    private User user;
+    private Person doctor;
 }
