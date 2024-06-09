@@ -9,7 +9,7 @@ input RegisterRequest {
   contact_number: String!
   birth_date: String!
   url: String!
-  titulo: String!
+  titulo: String
 }
 
 input LoginRequest {
@@ -42,4 +42,12 @@ input DocumentRequest {
   url: String
   type_file: String
   story_detail_id: String
+}
+
+input TreatmentRequest {
+  id: String
+  detail: String!
+  title: String!
+  recipe:String!
+  paciente_id:String
 }

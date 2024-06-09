@@ -3,9 +3,13 @@ package com.softwaredos.clinica.Controller;
 import java.util.Arrays;
 import java.util.List;
 
+import com.softwaredos.clinica.Model.Image;
 import com.softwaredos.clinica.Model.Person;
+import com.softwaredos.clinica.Repository.ImageRepository;
 import com.softwaredos.clinica.Repository.PersonRepository;
 import com.softwaredos.clinica.Request.RegisterRequest;
+import com.softwaredos.clinica.config.Auth;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,10 @@ public class UserController {
     private UserRepository userrepo;
     @Autowired
     private PersonRepository personRepository;
+    @Autowired
+    private ImageRepository imageRepository;
+    @Autowired
+    private Auth auth;
 
     @Secured("ROLE_PACIENTE")
     @QueryMapping
@@ -121,6 +129,11 @@ public class UserController {
     @QueryMapping
     public Person showDoctor(@Argument String id) {
         return personRepository.findById(id).orElse(null);
+    }
+
+    @QueryMapping
+    public List<Image> miImage() {
+        return imageRepository.findByUser(auth.user());
     }
 
 }

@@ -25,4 +25,10 @@ public class Auth {
         User user = userRepository.findByUsername(userDetails.getUsername()).get();
         return personRepository.findByUser_id(user.getId());
     }
+
+    public User user() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByUsername(userDetails.getUsername()).get();
+        return user;
+    }
 }
