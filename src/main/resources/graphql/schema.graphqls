@@ -17,6 +17,13 @@ type Query {
   #Documentos
   getDocument(historial_id: String): [Documents]
   showDocument(id: String): Documents
+
+  miImage:[Image]
+
+  # Tratamiento
+  getTratamientoByIdPaciente(paciente_id:String):[Treatment]
+  showTratamiento(id:String):Treatment
+  getTratamiento:[Treatment]
 }
 
 type Mutation {
@@ -44,4 +51,10 @@ type Mutation {
   #Gestionar documento
   uploadDocument(request: DocumentRequest): Documents
   deleteDocument(id: String): Boolean
+
+  #Tratamiento
+  storeTratamieto(request:TreatmentRequest):Treatment
+  deleteTratamiento(id:String):String
+  updateTratamiento(request:TreatmentRequest):Treatment
+
 }

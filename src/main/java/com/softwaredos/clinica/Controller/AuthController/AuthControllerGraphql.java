@@ -1,9 +1,7 @@
 
 package com.softwaredos.clinica.Controller.AuthController;
 
-
 import graphql.kickstart.tools.GraphQLMutationResolver;
-
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,12 +16,10 @@ import com.softwaredos.clinica.Response.AuthResponse;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthControllerGraphql implements GraphQLMutationResolver{
-
+public class AuthControllerGraphql implements GraphQLMutationResolver {
 
     @Autowired
     private final AuthService authService;
-
 
     @MutationMapping
     public AuthResponse login(@Argument LoginRequest request) {
@@ -35,7 +31,5 @@ public class AuthControllerGraphql implements GraphQLMutationResolver{
 
         return authService.register(request);
     }
-
-    
 
 }

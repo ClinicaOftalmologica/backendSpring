@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ import com.softwaredos.clinica.Repository.UserRepository;
 import com.softwaredos.clinica.Request.LoginRequest;
 import com.softwaredos.clinica.Request.RegisterRequest;
 import com.softwaredos.clinica.Response.AuthResponse;
+import com.softwaredos.clinica.config.Auth;
 import com.softwaredos.clinica.utils.JwtService;
 
 import lombok.RequiredArgsConstructor;
@@ -41,11 +43,14 @@ public class AuthService {
 
         public AuthResponse login(LoginRequest request) {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),
-                                                request.getPassword()));
+                                request.getPassword()));
                 UserDetails user = userRepository.findByUsername(request.getEmail()).orElseThrow();
                 String token = jwtService.getToken(user);
+                User usuario = userRepository.findByUsername(user.getUsername()).get();
+                Person person = personRepository.findByUser_id(usuario.getId());
                 return AuthResponse.builder()
                                 .token(token)
+                                .person(person)
                                 .build();
         }
 
@@ -53,52 +58,52 @@ public class AuthService {
                 try {
                         Optional<User> usuarioOptional = userRepository.findByUsername(request.getEmail());
 
-                if (usuarioOptional.isPresent()) {
-                        return AuthResponse.builder()
-                        .message("El usuario ya existe")
-                        .build();    
-                }else{
-                        User user = User.builder()
-                                .username(request.getEmail())
-                                .password(passwordEncoder.encode(request.getPassword()))
-                                .email(request.getEmail())
-                                .role(Role.PACIENTE)
-                                .build();
+                        if (usuarioOptional.isPresent()) {
+                                return AuthResponse.builder()
+                                                .message("El usuario ya existe")
+                                                .build();
+                        } else {
+                                User user = User.builder()
+                                                .username(request.getEmail())
+                                                .password(passwordEncoder.encode(request.getPassword()))
+                                                .email(request.getEmail())
+                                                .role(Role.PACIENTE)
+                                                .build();
 
-                LocalDate localDate = LocalDate.parse(request.getBirth_date(),
-                                DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                Date date = java.sql.Date.valueOf(localDate);
+                                LocalDate localDate = LocalDate.parse(request.getBirth_date(),
+                                                DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                                Date date = java.sql.Date.valueOf(localDate);
 
-                Person person = Person.builder()
-                                .name(request.getName())
-                                .lastName(request.getLast_name())
-                                .address(request.getAddress())
-                                .ci(request.getCi())
-                                .sexo(request.getSexo().charAt(0))
-                                .tipoUser((short) 1)
-                                .contactNumber(request.getContact_number())
-                                .birthDate(date)
-                                .user(user)
-                                .build();
-                Image imagen = Image.builder()
-                                .url(request.getUrl())
-                                .user(user).build();
+                                Person person = Person.builder()
+                                                .name(request.getName())
+                                                .lastName(request.getLast_name())
+                                                .address(request.getAddress())
+                                                .ci(request.getCi())
+                                                .sexo(request.getSexo().charAt(0))
+                                                .tipoUser((short) 1)
+                                                .contactNumber(request.getContact_number())
+                                                .birthDate(date)
+                                                .user(user)
+                                                .build();
+                                Image imagen = Image.builder()
+                                                .url(request.getUrl())
+                                                .user(user).build();
 
-                userRepository.save(user);
-                personRepository.save(person);
-                imageRepository.save(imagen);
+                                userRepository.save(user);
+                                personRepository.save(person);
+                                imageRepository.save(imagen);
 
-                return AuthResponse.builder()
-                                .token(jwtService.getToken(user))
-                                .build();
-                }  
-                        
+                                return AuthResponse.builder()
+                                                .token(jwtService.getToken(user))
+                                                .person(personRepository.save(person))
+                                                .build();
+                        }
+
                 } catch (Exception e) {
                         return AuthResponse.builder()
-                        .message("Error: "+e.getMessage())
-                        .build(); 
+                                        .message("Error: " + e.getMessage())
+                                        .build();
                 }
 
-                           
         }
 }

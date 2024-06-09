@@ -20,6 +20,7 @@ public class DocumentController {
     private DocumentRepository documentRepository;
     @Autowired
     private Story_detailRepository story_detailRepository;
+    
 
     // listar documento id_historia_detalle
     @QueryMapping
