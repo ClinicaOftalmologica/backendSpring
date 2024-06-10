@@ -41,7 +41,6 @@ public class HorarioController {
                 .data(horarioRepository.findByDoctor(auth.persona()))
                 .build();
     }
-
     @MutationMapping
     public Available_time storeHorario(@Argument HorarioRequest request) {
         LocalDate localDate = LocalDate.parse(request.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
@@ -57,14 +56,13 @@ public class HorarioController {
                 .build();
         return horarioRepository.save(available_time);
     }
-
     @MutationMapping
     public Available_time updateHorario(@Argument HorarioRequest request) {
         Optional<Available_time> optionalAvailableTime = horarioRepository.findById(request.getId());
         if (optionalAvailableTime.isPresent()) {
             Available_time availableTime = optionalAvailableTime.get();
 
-            LocalDate localDate = LocalDate.parse(request.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate localDate = LocalDate.parse(request.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             LocalTime localTime = LocalTime.parse(request.getTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
 
             availableTime.setDate(java.sql.Date.valueOf(localDate));
@@ -75,7 +73,6 @@ public class HorarioController {
             throw new EntityNotFoundException("Available_time not found with ID: " + request.getId());
         }
     }
-
     @MutationMapping
     public Boolean deleteHorario(@Argument String id) {
         if (horarioRepository.existsById(id)) {
