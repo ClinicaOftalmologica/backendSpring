@@ -11,4 +11,5 @@ import com.softwaredos.clinica.Model.Reservation;
 @Repository
 public interface ReservationRepository extends MongoRepository<Reservation,String> {
      List<Reservation> findByStateAndPaciente(String state, Person paciente);
+     List<Reservation> findByState(String state);
 }

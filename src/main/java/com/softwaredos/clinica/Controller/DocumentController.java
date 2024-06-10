@@ -3,6 +3,7 @@ package com.softwaredos.clinica.Controller;
 import java.util.List;
 
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -15,6 +16,7 @@ import com.softwaredos.clinica.Repository.Story_detailRepository;
 import com.softwaredos.clinica.Request.DocumentRequest;
 
 @RestController
+@Secured("ROLE_DOCTOR")
 public class DocumentController {
     @Autowired
     private DocumentRepository documentRepository;

@@ -1,6 +1,7 @@
 
 type Query {
-  #requiere token
+
+  #Gestion Usuario
   listarUsuario: [Person]
   findUser(username: String): User
   showDoctor(id: String): Person
@@ -9,6 +10,7 @@ type Query {
   miHorario: HorarioResponse
   getHorarioDisponible: [Available_time]
   getReservaPendiente: [Reservation]
+  getReservacion:[Reservation]
 
   show_Story_detail(id: String): Story_detail
   ListDetallePaciente(paciente_id: String): [Story_detail]
@@ -30,6 +32,8 @@ type Mutation {
   #publico
   login(request: LoginRequest): AuthResponse
   register(request: RegisterRequest): AuthResponse
+
+  #Gestionar usuario
   storeDoctor(request: RegisterRequest): String
   deleteDoctor(id: String): String
   updateDoctor(id: String, request: RegisterRequest): String
@@ -42,6 +46,7 @@ type Mutation {
   # Gestionar Reserva
   saveReservation(request: ReservationRequest): Reservation
   cancelReserva(id: String): Reservation
+  FinalizarReserva(id: String):Reservation
 
   #Gestionar Historia detalle
   store_StoryDetail(request: DetailRequest): Story_detail

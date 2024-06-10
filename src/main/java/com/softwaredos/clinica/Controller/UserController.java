@@ -44,14 +44,10 @@ public class UserController {
     @Autowired
     private Auth auth;
 
-    @Secured("ROLE_PACIENTE")
+    @Secured({ "ROLE_DOCTOR", "ROLE_ADMIN" })
     @QueryMapping
     public List<Person> listarUsuario() {
-        // List<Role> roles = Arrays.asList(Role.DOCTOR, Role.ADMIN); // Añade los roles
-        // que necesites
-        // return userrepo.findByRoleIn(roles);
         return personRepository.findBytipoUserNot((short) 1);
-
     }
 
     @Secured({ "ROLE_DOCTOR", "ROLE_ADMIN" })
@@ -61,7 +57,7 @@ public class UserController {
         Optional<User> userOptional = userrepo.findByUsername(username);
         return userOptional.orElse(null);
     }
-
+    @Secured({"ROLE_ADMIN" })
     @MutationMapping
     public String storeDoctor(@Argument RegisterRequest request) {
         User user = User.builder().email(request.getEmail())
@@ -86,6 +82,7 @@ public class UserController {
         return "Doctor Creado Con Exito";
     }
 
+    @Secured({"ROLE_ADMIN" })
     @MutationMapping
     public String deleteDoctor(@Argument String id) {
         if (personRepository.existsById(id)) {
@@ -102,7 +99,7 @@ public class UserController {
             return "Error al eliminar el usuario";
         }
     }
-
+    @Secured({"ROLE_ADMIN" })
     @MutationMapping
     public String updateDoctor(@Argument String id, @Argument RegisterRequest request) {
         Person person = personRepository.findById(id).orElse(null);
@@ -125,12 +122,12 @@ public class UserController {
         }
         return "No se pudieron actualizar los datos";
     }
-
+    @Secured({"ROLE_DOCTOR","ROLE_ADMIN"})
     @QueryMapping
     public Person showDoctor(@Argument String id) {
         return personRepository.findById(id).orElse(null);
     }
-
+    @Secured({"ROLE_ADMIN","ROLE_DOCTOR" ,"ROLE_PACIENTE"})
     @QueryMapping
     public List<Image> miImage() {
         return imageRepository.findByUser(auth.user());
