@@ -4,8 +4,12 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,11 +32,13 @@ import com.softwaredos.clinica.config.Auth;
 import com.softwaredos.clinica.utils.JwtService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-
+        @Autowired
+        private RestTemplate restTemplate;
         private final UserRepository userRepository;
         private final PersonRepository personRepository;
         private final ImageRepository imageRepository;
@@ -70,6 +76,7 @@ public class AuthService {
                                                 .role(Role.PACIENTE)
                                                 .build();
 
+
                                 LocalDate localDate = LocalDate.parse(request.getBirth_date(),
                                                 DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                                 Date date = java.sql.Date.valueOf(localDate);
@@ -92,6 +99,19 @@ public class AuthService {
                                 userRepository.save(user);
                                 personRepository.save(person);
                                 imageRepository.save(imagen);
+                                try {
+                                        // Datos para enviar en el POST
+                                        Map<String, String> postData = new HashMap<>();
+                                        postData.put("email", user.getUsername());
+                                        postData.put("password",user.getPassword());
+                                        postData.put("url",request.getUrl());
+
+                                        // Realizar el POST a la API externa
+                                        String apiUrl = "http://127.0.0.1:4000/auth/register";
+                                        restTemplate.postForObject(apiUrl, postData, String.class);
+                                } catch (Exception e) {
+                                        System.out.println("ERROR CONSUMIR IA MOVIL RECONOCIMIENTO: " + e.getMessage());
+                                }
 
                                 return AuthResponse.builder()
                                                 .token(jwtService.getToken(user))
