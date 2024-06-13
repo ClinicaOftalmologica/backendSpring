@@ -31,6 +31,7 @@ type Reservation {
   id: String
   place: String
   state: String
+  paciente:Person
   available_time: Available_time
 }
 type AuthResponse {
